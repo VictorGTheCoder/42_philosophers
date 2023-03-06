@@ -1,32 +1,37 @@
-SRCS = srcs/main.c 
+SRCS	=	srcs/main.c srcs/philo_routine.c srcs/philo_utils.c \
+			srcs/philo_init.c srcs/philo_actions.c
 
-CC = gcc
+OBJS	= ${SRCS:.c=.o}
 
-FLAGS = -Werror -Wall -Wextra
+CFLAGS	=  -Wall -Werror -Wextra
+
+CC		= gcc
+
+RM		= rm -f
+
+NAME 	= philo
 
 INCLUDE = includes
 
-OBJS = ${SRCS:.c=.o}
+#$@ = all, $< = server / client
 
-NAME = philo
+%.o: %.c
+	$(CC) $(CFLAGS) -c $< -o ${<:.c=.o}
 
-.c.o:
-			${CC} ${FLAGS} -c $< -o ${<:.c=.o}
+$(NAME): $(OBJS)
+	make -C libft
+	$(CC) -o $(NAME) $(OBJS) -Llibft -lft -I $(INCLUDE)
 
-${NAME}:	${OBJS}
-			make -C libft
-			${CC} ${FLAGS} -o ${NAME} ${OBJS} -I ${INCLUDE} -lft -Llibft
-
-all: ${NAME}
+all: $(NAME)
 
 clean:
-			${RM} ${OBJS}
-			make clean -C libft
+	$(RM) $(OBJS)
+	make clean -C libft
 
-fclean:		clean
-			${RM} ${NAME}
-			make fclean -C libft
+fclean: clean
+	${RM}  $(NAME)
+	make fclean -C libft
 
-re:			fclean all
+re: fclean all
 
-.PHONY:		all clean fclean re
+.PHONY: all clean fclean re
