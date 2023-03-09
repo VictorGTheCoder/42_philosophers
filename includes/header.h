@@ -6,7 +6,7 @@
 /*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/06 14:30:06 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/03/09 18:32:14 by vgiordan         ###   ########.fr       */
+/*   Updated: 2023/03/09 18:35:48 by vgiordan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ typedef struct s_philo
 	pthread_t       thread;
 	pthread_mutex_t fork_mutex;
 	struct s_philo	*next_philo;
+	pthread_mutex_t *write_mutexcpy;
 } t_philo;
 
 typedef struct s_datas
