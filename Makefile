@@ -1,5 +1,5 @@
-SRCS	=	srcs/main.c srcs/philo_routine.c srcs/philo_utils.c \
-			srcs/philo_init.c srcs/philo_actions.c
+SRCS	=	srcs/main.c srcs/philo_utils.c \
+			srcs/philo_init.c srcs/philo_actions.c srcs/philo.c
 
 OBJS	= ${SRCS:.c=.o}
 
@@ -20,7 +20,7 @@ INCLUDE = includes
 
 $(NAME): $(OBJS)
 	make -C libft
-	$(CC) -o $(NAME) $(OBJS) -Llibft -lft -I $(INCLUDE)
+	$(CC) -o $(NAME) $(OBJS) -Llibft -lft -I $(INCLUDE) -g -fsanitize=address
 
 all: $(NAME)
 
