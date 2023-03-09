@@ -6,59 +6,55 @@
 /*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/06 19:26:04 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/03/09 15:54:56 by vgiordan         ###   ########.fr       */
+/*   Updated: 2023/03/09 16:47:47 by vgiordan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/header.h"
 
-void    init_philosophers(t_args *args, t_philo **p)
+void    init_philosophers(t_data *data)
 {
 	int i;
 	struct timeval current_time;
 
-	*p = malloc(sizeof(t_philo) * (args->nb_philos));
+	data->philo = malloc(sizeof(t_philo) * (data->args->nb_philos));
 	i = 0;
-	ft_printf("nbphilos %d\n", args->nb_philos);
-	pthread_mutex_init((&(*p)[0].write_mutex), NULL);
-	while (i < args->nb_philos)
+	ft_printf("nbphilos %d\n", data->args->nb_philos);
+	pthread_mutex_init(&(data->write_mutex), NULL);
+	while (i < data->args->nb_philos)
 	{
-		(*p)[i].id = i + 1;
-		//(*p)[i].args = args;
+		data->philo[i].write_mutex = data->write_mutex;
+		data->philo[i].id = i + 1;
 		gettimeofday(&current_time, NULL);
-		(*p)[i].init_time = current_time.tv_sec;
-		(*p)[i].init_utime = current_time.tv_usec;
-		(*p)[i].last_meal_time = current_time.tv_sec - (*p)[i].init_time;
-		(*p)[i].meal_count = 0;
-		if (i != 0)
-		{
-			((*p)[i].write_mutex) = ((*p)[0].write_mutex); 
-		}
-		pthread_mutex_init((&(*p)[i].fork_mutex), NULL);
+		data->philo[i].init_time = current_time.tv_sec;
+		data->philo[i].init_utime = current_time.tv_usec;
+		data->philo[i].last_meal_time = current_time.tv_sec - data->philo[i].init_time;
+		data->philo[i].meal_count = 0;
+		pthread_mutex_init((&data->philo[i].fork_mutex), NULL);
 		if (i == 0)
-			(*p)[i].left_fork = args->nb_philos - 1;
+			data->philo[i].left_fork = data->args->nb_philos - 1;
 		else
-			(*p)[i].left_fork = i - 1;
-		if (i == args->nb_philos - 1)
+			data->philo[i].left_fork = i - 1;
+		if (i == data->args->nb_philos - 1)
 		{
-			(*p)[i].right_fork = 0;
+			data->philo[i].right_fork = 0;
 		}
 		else
 		{
-			(*p)[i].right_fork = i;	
+			data->philo[i].right_fork = i;	
 		}
 		i++;
 	}
 	i = 0;
-	while (i < args->nb_philos)
+	while (i < data->args->nb_philos)
 	{
-		if (i == args->nb_philos - 1)
+		if (i == data->args->nb_philos - 1)
 		{
-			(*p)[i].next_philo = &((*p)[0]);
+			data->philo[i].next_philo = &(data->philo[0]);
 		}
 		else
-			(*p)[i].next_philo = &((*p)[i + 1]);
-		display_status(&((*p)[i]), "");
+			data->philo[i].next_philo = &(data->philo[i + 1]);
+		display_status(&(data->philo[i]), "");
 		ft_printf("------------\n");
 		i++;
 	}

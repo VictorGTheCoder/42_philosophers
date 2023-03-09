@@ -6,7 +6,7 @@
 /*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/06 14:30:06 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/03/09 15:57:26 by vgiordan         ###   ########.fr       */
+/*   Updated: 2023/03/09 16:35:19 by vgiordan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,16 +42,16 @@ typedef struct s_philo
 	int             init_utime;
 	pthread_t       thread;
 	pthread_mutex_t fork_mutex;
-	struct s_philo	*next_philo;
 	pthread_mutex_t write_mutex;
-	t_args			*args;
+	struct s_philo	*next_philo;
 } t_philo;
 
-typedef struct s_philos
+typedef struct s_datas
 {
-	t_philo *philos;
+	t_philo *philo;
 	t_args	*args;
-}   t_philos;
+	pthread_mutex_t write_mutex;
+}   t_data;
 
 /*<------------------ACTIONS------------------>*/
 
@@ -63,11 +63,11 @@ void	lay_fork(t_philo *philo);
 
 /*<-------------------PHILO-------------------->*/
 
-void    process(t_args *args);
+void    process(t_data *datada);
 
 /*<----------------PHILO_ROUTINE---------------->*/
 
-void    *philo_routine(void *philo);
+void    *philo_routine(void *data);
 
 /*<--------------------UTILS-------------------->*/
 
@@ -76,6 +76,6 @@ void    display_status(t_philo *p, char *str);
 
 /*<---------------------INIT--------------------->*/
 
-void    init_philosophers(t_args *args, t_philo **p);
+void    init_philosophers(t_data *data);
 
 #endif

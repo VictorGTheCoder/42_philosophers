@@ -6,7 +6,7 @@
 /*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/03 17:34:09 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/03/08 17:27:51 by vgiordan         ###   ########.fr       */
+/*   Updated: 2023/03/09 16:03:09 by vgiordan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,8 @@
 static int  parse_args(int argc, char *argv[])
 {
 
-	t_args		args;
+	t_args	args;
+	t_data	data;
 	int			i;
 
 	i = 0;
@@ -27,10 +28,10 @@ static int  parse_args(int argc, char *argv[])
 		args.time_to_sleep = ft_atoi(argv[4]);
 		if (argc == 6)
 			args.max_eat -= ft_atoi(argv[5]);
-		process(&args);
+		data.args = &args;
+		process(&data);
 		return (1);
 	}
-	
 	else
 		return (0);
 }

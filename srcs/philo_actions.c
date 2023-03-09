@@ -6,7 +6,7 @@
 /*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/06 19:25:48 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/03/09 15:27:30 by vgiordan         ###   ########.fr       */
+/*   Updated: 2023/03/09 16:36:44 by vgiordan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void    ph_sleep(t_philo *philo)
 	pthread_mutex_lock(&(philo->write_mutex));
 	ft_printf("Philo %d is sleeping\n", philo->id);
 	pthread_mutex_unlock(&(philo->write_mutex));
-	usleep(philo->args->time_to_sleep);
+	//usleep(philo->args->time_to_sleep);
 }
 
 void    ph_eat(t_philo *philo)
@@ -26,7 +26,7 @@ void    ph_eat(t_philo *philo)
 	pthread_mutex_lock(&(philo->write_mutex));
 	ft_printf("Philo %d is eating\n", philo->id);
 	pthread_mutex_unlock(&(philo->write_mutex));
-	usleep(philo->args->time_to_eat);
+	//usleep(philo->args->time_to_eat);
 	lay_fork(philo);
 }
 
