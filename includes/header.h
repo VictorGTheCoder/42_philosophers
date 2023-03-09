@@ -6,7 +6,7 @@
 /*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/06 14:30:06 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/03/09 16:35:19 by vgiordan         ###   ########.fr       */
+/*   Updated: 2023/03/09 18:32:14 by vgiordan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,6 @@ typedef struct s_philo
 	int             init_utime;
 	pthread_t       thread;
 	pthread_mutex_t fork_mutex;
-	pthread_mutex_t write_mutex;
 	struct s_philo	*next_philo;
 } t_philo;
 

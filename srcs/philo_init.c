@@ -6,7 +6,7 @@
 /*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/06 19:26:04 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/03/09 16:47:47 by vgiordan         ###   ########.fr       */
+/*   Updated: 2023/03/09 18:14:40 by vgiordan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,11 @@ void    init_philosophers(t_data *data)
 	data->philo = malloc(sizeof(t_philo) * (data->args->nb_philos));
 	i = 0;
 	ft_printf("nbphilos %d\n", data->args->nb_philos);
-	pthread_mutex_init(&(data->write_mutex), NULL);
+
+	ft_printf("mutex address 1 %p\n", data->write_mutex);
 	while (i < data->args->nb_philos)
 	{
-		data->philo[i].write_mutex = data->write_mutex;
+		//data->philo[i].write_mutex = data->write_mutex;
 		data->philo[i].id = i + 1;
 		gettimeofday(&current_time, NULL);
 		data->philo[i].init_time = current_time.tv_sec;
