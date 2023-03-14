@@ -6,13 +6,13 @@
 /*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/06 15:41:43 by vgiordan          #+#    #+#             */
-/*   Updated: 2022/11/08 14:32:18 by vgiordan         ###   ########.fr       */
+/*   Updated: 2023/03/14 10:36:13 by vgiordan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static int	ft_signe(const char *str)
+static long	ft_signe(const char *str)
 {
 	int	i;
 
@@ -37,9 +37,9 @@ static int	ft_signe(const char *str)
 	return (1);
 }
 
-int	ft_atoi(const char *str)
+long	ft_atoi(const char *str)
 {
-	int	number;
+	long	number;
 	int	i;
 
 	i = 0;

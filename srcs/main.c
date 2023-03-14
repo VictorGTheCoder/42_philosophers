@@ -6,7 +6,7 @@
 /*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/03 17:34:09 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/03/09 16:03:09 by vgiordan         ###   ########.fr       */
+/*   Updated: 2023/03/14 10:51:21 by vgiordan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ static int  parse_args(int argc, char *argv[])
 		args.time_to_die = ft_atoi(argv[2]);
 		args.time_to_eat = ft_atoi(argv[3]);
 		args.time_to_sleep = ft_atoi(argv[4]);
+		printf("%u\n", args.time_to_sleep);
 		if (argc == 6)
 			args.max_eat -= ft_atoi(argv[5]);
 		data.args = &args;
@@ -40,12 +41,8 @@ int	main(int argc, char *argv[])
 {
 	if (parse_args(argc, argv) == 0)
 	{
-		ft_putstr_fd("usage ./philo <> <> <> <>\n", 1);
+		ft_putstr_fd("usage ./philo <number of philosophers> <time to die> <time to eat> <time to sleep>\n", 1);
 		return (0);
-	}
-	else
-	{
-		
 	}
 	return 0;
 }

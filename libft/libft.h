@@ -6,7 +6,7 @@
 /*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/29 01:45:32 by victorgiord       #+#    #+#             */
-/*   Updated: 2023/03/06 18:39:20 by vgiordan         ###   ########.fr       */
+/*   Updated: 2023/03/14 10:36:23 by vgiordan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ char	*ft_strdup(char *src);
 char	**ft_split(char const *s, char c);
 char	*ft_itoa(int n);
 
-int		ft_atoi(const char *str);
+long		ft_atoi(const char *str);
 int		ft_isalnum(int c);
 int		ft_isalpha(int c);
 int		ft_isascii(int c);
