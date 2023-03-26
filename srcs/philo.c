@@ -25,28 +25,26 @@ void *monitor_philos(void *p)
         i = 0;
         while (i < data->args->nb_philos)
         {
-            if (philo_is_dead(&data->philo[i]))
-            {
-                pthread_mutex_lock(&data->write_mutex);
-                //printf("Philosopher %d has died\n", i + 1);
-                pthread_mutex_unlock(&data->write_mutex);
-                return (NULL);
-            }
+            philo_is_dead(&data->philo[i]);
             i++;
         }
         usleep(1000);
     }
 }
 
-void    *philo_routine(void *p)
+void *philo_routine(void *p)
 {
-	t_philo	*philo;
+    t_philo *philo;
 
-	philo = (t_philo *)p;
-	while (philo->status != DEAD)
-	{
-		take_fork(philo);
-	}
+    philo = (t_philo *)p;
+    while (philo->args->max_eat > 0 && philo->meal_count < philo->args->max_eat)
+    {
+		if (philo->status == DEAD)
+			exit(1);
+        take_fork(philo);
+    }
+	philo->status = DEAD;
+	printf("\x1B[33m%lldms  Philo %d has eaten %d times on %d\n", ft_time() - philo->init_time, philo->id, philo->meal_count, philo->args->max_eat);
     return (NULL);
 }
 
@@ -56,26 +54,27 @@ void process(t_data *data)
 	pthread_t monitor_thread;
 
 	i = 0;
-	//pthread_mutex_init(&mutex, NULL);
 	init_philosophers(data);
-	//ft_printf("mutex address 2 %p\n", &data->write_mutex);
-	
 	if (pthread_create(&monitor_thread, NULL, monitor_philos, data) != 0)
 		exit(1);
 
 	while (i < data->args->nb_philos)
 	{
 		if ((pthread_create(&(data->philo[i].thread), NULL, philo_routine, (&data->philo[i]))) != 0)
+		{
+			perror("thread");
 			exit(1);
-		//ft_printf("Thread %d create\n", i);
+		}
 		i++;
 	}
-	
 	i = 0;
 	while (i < data->args->nb_philos)
 	{
 		if ((pthread_join(data->philo[i].thread, NULL)) != 0)
+		{
+			perror("thread");
 			exit(1);
+		}
 		i++;
 	}
 	pthread_mutex_destroy(&(data->write_mutex));

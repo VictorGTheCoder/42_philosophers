@@ -57,5 +57,7 @@ long	ft_atoi(const char *str)
 		number = number * 10 + str[i] - '0';
 		i++;
 	}
+	if (number * ft_signe(str) > 2147483647 || number * ft_signe(str) < 0)
+		return (-1);
 	return (number * ft_signe(str));
 }

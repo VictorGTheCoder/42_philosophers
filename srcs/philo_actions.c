@@ -28,22 +28,21 @@ void    ph_sleep_and_think(t_philo *philo)
 	printf("\x1B[37m%lldms  Philo %d is thinking\n", ft_time() - philo->init_time, philo->id);
 }
 
-void    ph_eat(t_philo *philo)
+void ph_eat(t_philo *philo)
 {
-	if (philo->status == DEAD)
-		return ;
-	philo->status = EATING;
-	//philo_is_dead(philo);
-	//printf("Mutex address %p\n", &(philo->write_mutex));
-	//pthread_mutex_lock(&(philo->write_mutex));
-	printf("\x1B[37m%lldms  Philo %d is eating\n", ft_time() - philo->init_time, philo->id);
-	//pthread_mutex_unlock(&(philo->write_mutex));
-	printf("%u\n", philo->args->time_to_sleep * 1000);
-	usleep(philo->args->time_to_eat * 1000);
-	philo->last_meal_time = (ft_time() - philo->init_time - philo->last_meal_time);
-	philo->meal_count += 1;
-	lay_fork(philo);
+	long long current_time;
+    if (philo->status == DEAD)
+        return;
+    
+    philo->status = EATING;
+    current_time = ft_time() - philo->init_time;
+    printf("\x1B[37m%lldms  Philo %d is eating\n", current_time, philo->id);
+    usleep(philo->args->time_to_eat * 1000);
+    philo->last_meal_time = current_time;
+    philo->meal_count += 1;
+    lay_fork(philo);
 }
+
 
 int	take_fork(t_philo *philo)
 {

@@ -33,15 +33,16 @@ long long ft_time()
 
 int	philo_is_dead(t_philo *philo)
 {
+
 	if(philo->status == EATING)
 		return (0);
-	//printf("\x1B[31m DELTA TIME EAT %lldms  Philo %d ::: MAX TIME %d\n", ft_time() - philo->init_time, philo->id, philo->args->time_to_die);
-	philo->fork = 1;
+	if(philo->status == DEAD)
+		return (1);
 	if (ft_time() - philo->last_meal_time - philo->init_time > philo->args->time_to_die)
 	{
 		philo->status = DEAD;
 		printf("\x1B[31m%lldms  Philo %d died\n", ft_time() - philo->init_time, philo->id);
-		return (1);
+		exit(1);
 	}
 	return (0);
 }

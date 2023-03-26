@@ -12,7 +12,7 @@
 
 #ifndef HEADER_H
 # define HEADER_H
-
+# define INT_MAX 2147483647
 # include <stdio.h>
 # include <unistd.h>
 # include <stdlib.h>

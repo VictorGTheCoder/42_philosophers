@@ -17,18 +17,20 @@ static int  parse_args(int argc, char *argv[])
 
 	t_args	args;
 	t_data	data;
-	int			i;
 
-	i = 0;
 	if (argc == 5 || argc == 6)
 	{
 		args.nb_philos = ft_atoi(argv[1]);
 		args.time_to_die = ft_atoi(argv[2]);
 		args.time_to_eat = ft_atoi(argv[3]);
 		args.time_to_sleep = ft_atoi(argv[4]);
-		printf("%u\n", args.time_to_sleep);
+		args.max_eat = INT_MAX;
+		if (args.nb_philos == -1 || args.time_to_die == -1 || args.time_to_eat == -1 || args.time_to_sleep == -1 || args.max_eat == -1)
+		{
+			return (0);
+		}
 		if (argc == 6)
-			args.max_eat -= ft_atoi(argv[5]);
+			args.max_eat = ft_atoi(argv[5]);
 		data.args = &args;
 		process(&data);
 		return (1);
