@@ -25,10 +25,13 @@ static int  parse_args(int argc, char *argv[])
 		args.time_to_eat = ft_atoi(argv[3]);
 		args.time_to_sleep = ft_atoi(argv[4]);
 		args.max_eat = INT_MAX;
+		pthread_mutex_init((&args.write_mutex), NULL);
 		if (args.nb_philos == -1 || args.time_to_die == -1 || args.time_to_eat == -1 || args.time_to_sleep == -1 || args.max_eat == -1)
 		{
 			return (0);
 		}
+		if (args.time_to_die == 0)
+			return (0);
 		if (argc == 6)
 			args.max_eat = ft_atoi(argv[5]);
 		data.args = &args;

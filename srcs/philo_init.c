@@ -25,7 +25,7 @@ void    init_philosophers(t_data *data)
 	{
 		data->philo[i].status = SLEEPTHINK;
 		data->philo[i].args = data->args;
-		data->philo[i].write_mutexcpy = &data->write_mutex;
+		//data->philo[i].write_mutexcpy = &data->write_mutex;
 		data->philo[i].id = i + 1;
 		data->philo[i].fork = 1;
 		data->philo[i].init_time = ft_time();

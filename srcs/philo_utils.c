@@ -17,17 +17,18 @@ void    display_status(t_philo *p, char *str)
 
 	(void) str;
 	printf("------------\n");
-	printf("Philo %d\nMeal Count %d\nlast_meal_time %lldms; pointeur %p next_ptr %p\n", p->id, p->meal_count, p->last_meal_time, p, p->next_philo);
+	printf("Philo %d\nMeal Count %d\nlast_meal_time %ldms; pointeur %p next_ptr %p\n", p->id, p->meal_count, p->last_meal_time, p, p->next_philo);
 	printf("------------\n");
 }
 
-long long ft_time()
+long int ft_time()
 {
 	struct timeval  tv;
-	long long time_in_mils;
+	long int time_in_mils;
 
+	time_in_mils = 0;
 	gettimeofday(&tv, NULL);
- 	time_in_mils = (tv.tv_sec) * 1000 + (tv.tv_usec) / 1000;
+ 	time_in_mils = tv.tv_sec * 1000 + (tv.tv_usec / 1000);
 	return (time_in_mils);
 }
 
@@ -41,10 +42,39 @@ int	philo_is_dead(t_philo *philo)
 	if (ft_time() - philo->last_meal_time - philo->init_time > philo->args->time_to_die)
 	{
 		philo->status = DEAD;
-		printf("\x1B[31m%lldms  Philo %d died\n", ft_time() - philo->init_time, philo->id);
+		printf("%ldms  Philo %d died\n", ft_time() - philo->init_time, philo->id);
 		exit(1);
 	}
 	return (0);
+}
+
+t_philo *get_philo_need_to_eat(t_philo *philo)
+{
+	int	i;
+	t_philo	*r;
+	long long temp;
+
+	i = 0;
+	r = NULL;
+	temp = philo->last_meal_time;
+	while (i < philo->args->nb_philos)
+	{
+		if (philo->last_meal_time < temp)
+			r = philo;
+		philo = philo->next_philo;
+		i++;
+	}
+	return (r);
+}
+
+void	ft_usleep(long int time_in_ms)
+{
+	long int	start_time;
+
+	start_time = 0;
+	start_time = ft_time();
+	while ((ft_time() - start_time) < time_in_ms)
+		usleep(time_in_ms / 10);
 }
 
 /*void    get_biggest_eat_time(t_philo *p)

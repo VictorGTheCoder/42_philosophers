@@ -28,7 +28,7 @@ void *monitor_philos(void *p)
             philo_is_dead(&data->philo[i]);
             i++;
         }
-        usleep(1000);
+        usleep(500);
     }
 }
 
@@ -41,10 +41,10 @@ void *philo_routine(void *p)
     {
 		if (philo->status == DEAD)
 			exit(1);
-        take_fork(philo);
+        try_to_eat(philo);
     }
 	philo->status = DEAD;
-	printf("\x1B[33m%lldms  Philo %d has eaten %d times on %d\n", ft_time() - philo->init_time, philo->id, philo->meal_count, philo->args->max_eat);
+	printf("\x1B[33m%ldms  Philo %d has eaten %d times on %d\n", ft_time() - philo->init_time, philo->id, philo->meal_count, philo->args->max_eat);
     return (NULL);
 }
 
@@ -77,6 +77,6 @@ void process(t_data *data)
 		}
 		i++;
 	}
-	pthread_mutex_destroy(&(data->write_mutex));
+	pthread_mutex_destroy(&(data->args->write_mutex));
 	free(data->philo);
 }
