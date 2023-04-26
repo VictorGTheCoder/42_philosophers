@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   ft_atoi.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: victo <victo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/06 15:41:43 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/03/14 10:36:13 by vgiordan         ###   ########.fr       */
+/*   Updated: 2023/04/26 19:11:56 by victo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static long	ft_signe(const char *str)
+static long long	ft_signe(const char *str)
 {
 	int	i;
 
@@ -37,9 +37,9 @@ static long	ft_signe(const char *str)
 	return (1);
 }
 
-long	ft_atoi(const char *str)
+long long	ft_atoi(const char *str)
 {
-	long	number;
+	long long	number;
 	int	i;
 
 	i = 0;

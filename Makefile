@@ -20,7 +20,7 @@ INCLUDE = includes
 
 $(NAME): $(OBJS)
 	make -C libft
-	$(CC) -o $(NAME) $(OBJS) -Llibft -lft -I $(INCLUDE) -g -fsanitize=address
+	$(CC) -o $(NAME) $(OBJS) -Llibft -lft -I $(INCLUDE) -g
 
 all: $(NAME)
 

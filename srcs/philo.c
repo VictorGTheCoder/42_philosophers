@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: victo <victo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/08 14:54:09 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/03/14 10:24:36 by vgiordan         ###   ########.fr       */
+/*   Updated: 2023/04/26 19:48:45 by victo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,14 @@ void *monitor_philos(void *p)
         while (i < data->args->nb_philos)
         {
             philo_is_dead(&data->philo[i]);
+			if (data->philo[i].status == DEAD)
+			{
+				//printf("%lldms Philo %d est mort\n",ft_time() - data->philo[i].init_time, data->philo[i].id);
+				exit(1);
+			}
             i++;
         }
-        usleep(500);
+        ft_usleep(1);
     }
 }
 
@@ -39,12 +44,15 @@ void *philo_routine(void *p)
     philo = (t_philo *)p;
     while (philo->args->max_eat > 0 && philo->meal_count < philo->args->max_eat)
     {
-		if (philo->status == DEAD)
+		/*if (philo->status == DEAD)
+		{
+			//printf("%lldms Philo %d est mort\n",ft_time() - philo->init_time, philo->id);
 			exit(1);
-        try_to_eat(philo);
+		}*/
+    	try_to_eat(philo);
     }
 	philo->status = DEAD;
-	printf("\x1B[33m%ldms  Philo %d has eaten %d times on %d\n", ft_time() - philo->init_time, philo->id, philo->meal_count, philo->args->max_eat);
+	printf("\x1B[33m%lldms  Philo %d has eaten %d times on %d\n", ft_time() - philo->init_time, philo->id, philo->meal_count, philo->args->max_eat);
     return (NULL);
 }
 

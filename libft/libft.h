@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: victo <victo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/29 01:45:32 by victorgiord       #+#    #+#             */
-/*   Updated: 2023/03/14 10:36:23 by vgiordan         ###   ########.fr       */
+/*   Updated: 2023/04/26 19:12:10 by victo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ char	*ft_strdup(char *src);
 char	**ft_split(char const *s, char c);
 char	*ft_itoa(int n);
 
-long		ft_atoi(const char *str);
+long long		ft_atoi(const char *str);
 int		ft_isalnum(int c);
 int		ft_isalpha(int c);
 int		ft_isascii(int c);
