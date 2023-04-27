@@ -6,7 +6,7 @@
 /*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/06 19:26:18 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/04/27 17:46:33 by vgiordan         ###   ########.fr       */
+/*   Updated: 2023/04/27 18:32:52 by vgiordan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ int	philo_is_dead(t_philo *philo)
 	{
 		philo->status = DEAD;
 		philo->args->stop_p = 1;
-		printf("%lldms  Philo %d died\n", ft_time()
+		printf("\x1B[31m%lldms  Philo %d died\n", ft_time()
 			- philo->init_time, philo->id);
 		return (1);
 	}

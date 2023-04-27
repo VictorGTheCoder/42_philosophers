@@ -6,7 +6,7 @@
 /*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/08 14:54:09 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/04/27 17:49:28 by vgiordan         ###   ########.fr       */
+/*   Updated: 2023/04/27 18:32:44 by vgiordan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,8 @@ void	*philo_routine(void *p)
 	philo = (t_philo *)p;
 	while (philo->args->max_eat > 0 && philo->meal_count < philo->args->max_eat)
 	{
+		if (philo->args->stop_p == 1)
+			return (NULL);
 		try_to_eat(philo);
 	}
 	philo->status = FINISHEAT;
