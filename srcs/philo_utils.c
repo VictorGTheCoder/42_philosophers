@@ -3,80 +3,61 @@
 /*                                                        :::      ::::::::   */
 /*   philo_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: victo <victo@student.42.fr>                +#+  +:+       +#+        */
+/*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/06 19:26:18 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/04/26 19:48:52 by victo            ###   ########.fr       */
+/*   Updated: 2023/04/27 17:46:33 by vgiordan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/header.h"
 
-void    display_status(t_philo *p, char *str)
+int	all_philo_are_thinking(t_philo *p)
 {
+	int	i;
 
-	(void) str;
-	printf("------------\n");
-	printf("Philo %d\nMeal Count %d\nlast_meal_time %lldms; pointeur %p next_ptr %p\n", p->id, p->meal_count, p->last_meal_time, p, p->next_philo);
-	printf("------------\n");
+	i = 0;
+	while (i < p->args->nb_philos)
+	{
+		if (p->status != SLEEPTHINK && p->status != FINISHEAT)
+			return (0);
+		i++;
+	}
+	return (1);
 }
 
-long long ft_time()
+long long	ft_time(void)
 {
-	struct timeval  tv;
-	long long time_in_mils;
+	struct timeval	tv;
+	long long		time_in_mils;
 
 	gettimeofday(&tv, NULL);
- 	time_in_mils = tv.tv_sec * 1000 + (tv.tv_usec / 1000);
+	time_in_mils = tv.tv_sec * 1000 + (tv.tv_usec / 1000);
 	return (time_in_mils);
 }
 
 int	philo_is_dead(t_philo *philo)
 {
-
-	if(philo->status == EATING)
-		return (0);
-	if(philo->status == DEAD)
-		return (1);
-	if (ft_time() - philo->last_meal_time - philo->init_time > philo->args->time_to_die)
-	{
-		philo->status = DEAD;
-		pthread_mutex_lock(&philo->args->write_mutex);
-		printf("%lldms  Philo %d died\n", ft_time() - philo->init_time, philo->id);
-		exit(1);
-	}
-	return (0);
-}
-
-t_philo *get_philo_need_to_eat(t_philo *philo)
-{
 	int	i;
-	t_philo	*r;
-	long long temp;
 
 	i = 0;
-	r = NULL;
-	temp = philo->last_meal_time;
+	if (ft_time() - philo->last_meal_time > philo->args->time_to_die
+		&& philo->status != FINISHEAT)
+	{
+		philo->status = DEAD;
+		philo->args->stop_p = 1;
+		printf("%lldms  Philo %d died\n", ft_time()
+			- philo->init_time, philo->id);
+		return (1);
+	}
 	while (i < philo->args->nb_philos)
 	{
-		if (philo->last_meal_time < temp)
-			r = philo;
-		philo = philo->next_philo;
-		i++;
+		if (philo[i++].status != FINISHEAT)
+			return (0);
 	}
-	return (r);
+	philo->args->stop_p = 1;
+	return (1);
 }
-
-/*void	ft_usleep(long int time_in_ms)
-{
-	long int	start_time;
-
-	start_time = 0;
-	start_time = ft_time();
-	while ((ft_time() - start_time) < time_in_ms)
-		usleep(time_in_ms / 10);
-}
-*/
 
 void	ft_usleep(long long time_in_ms)
 {
@@ -91,22 +72,23 @@ void	ft_usleep(long long time_in_ms)
 	}
 }
 
-/*void    get_biggest_eat_time(t_philo *p)
+int	get_hungriest_philo(t_data *data)
 {
-	int i;
-	int id;
-	int temp;
+	int	i;
+	int	id;
+	int	temp;
 
-	temp = 0;
+	temp = ft_time();
 	i = 0;
 	id = 0;
-	while (i < p->args->nb_philos)
+	while (i < data->args->nb_philos)
 	{
-		if (p[i].last_meal_time > temp)
+		if (data->philo[i].last_meal_time > temp)
 		{
-			temp = p[i].last_meal_time;
-			id = p[i].id;
+			temp = data->philo[i].last_meal_time;
+			id = data->philo[i].id;
 		}
 		i++;
 	}
-}*/
+	return (id);
+}

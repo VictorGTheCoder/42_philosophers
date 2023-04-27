@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_atoi.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: victo <victo@student.42.fr>                +#+  +:+       +#+        */
+/*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/06 15:41:43 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/04/26 19:11:56 by victo            ###   ########.fr       */
+/*   Updated: 2023/04/27 17:27:41 by vgiordan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,13 +37,29 @@ static long long	ft_signe(const char *str)
 	return (1);
 }
 
-long long	ft_atoi(const char *str)
+static int	check_numeric(const char *str)
 {
-	long long	number;
 	int	i;
 
 	i = 0;
+	while (str[i])
+	{
+		if ((str[i]) < '0' || str[i] > '9')
+			return (0);
+		i++;
+	}
+	return (1);
+}
+
+long long	ft_atoi(const char *str)
+{
+	long long	number;
+	int			i;
+
+	i = 0;
 	number = 0;
+	if (check_numeric(str) == 0)
+		return (-1);
 	while (!(str[i] >= '0' && str[i] <= '9') && str[i])
 	{
 		if (str[i] != ' ' && str[i] != '\t' && str[i] != '\n'

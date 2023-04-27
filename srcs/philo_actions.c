@@ -3,82 +3,57 @@
 /*                                                        :::      ::::::::   */
 /*   philo_actions.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: victo <victo@student.42.fr>                +#+  +:+       +#+        */
+/*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/06 19:25:48 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/04/26 19:32:41 by victo            ###   ########.fr       */
+/*   Updated: 2023/04/27 17:48:26 by vgiordan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/header.h"
 
-
-
-void    ph_sleep_and_think(t_philo *philo)
+void	ph_sleep_and_think(t_philo *philo)
 {
-	//pthread_mutex_lock(&(philo->write_mutex));
-	//philo_is_dead(philo);
-	if (philo->status == DEAD)
-		return ;
-	pthread_mutex_lock(&(philo->args->write_mutex));
-	printf("\x1B[37m%lldms  Philo %d is sleeping\n", ft_time() - philo->init_time, philo->id);
-	pthread_mutex_unlock(&(philo->args->write_mutex));
-	//pthread_mutex_unlock(&(philo->write_mutex));
-	ft_usleep(philo->args->time_to_sleep);
-	//philo_is_dead(philo);
-	pthread_mutex_lock(&(philo->args->write_mutex));
-	printf("\x1B[37m%lldms  Philo %d is thinking\n", ft_time() - philo->init_time, philo->id);
-	pthread_mutex_unlock(&(philo->args->write_mutex));
-}
-
-void ph_eat(t_philo *philo)
-{
-	long long current_time;
-    if (philo->status == DEAD)
-        return;
-    philo->status = EATING;
-    current_time = ft_time() - philo->init_time;
-
-	pthread_mutex_lock(&(philo->args->write_mutex));
-    printf("\x1B[37m%lldms  Philo %d is eating\n", current_time, philo->id);
-	pthread_mutex_unlock(&(philo->args->write_mutex));
-    ft_usleep(philo->args->time_to_eat);
 	philo->status = SLEEPTHINK;
-    philo->last_meal_time = ft_time() - philo->init_time;
-    philo->meal_count += 1;
-    lay_forks(philo);
+	printf("\x1B[37m%lldms  Philo %d is sleeping\n", ft_time() \
+		- philo->init_time, philo->id);
+	ft_usleep(philo->args->time_to_sleep);
+	printf("\x1B[37m%lldms  Philo %d is thinking\n", ft_time() \
+		- philo->init_time, philo->id);
 }
-	
+
+void	ph_eat(t_philo *philo)
+{
+	long long	current_time;
+
+	philo->status = EATING;
+	current_time = ft_time() - philo->init_time;
+	printf("\x1B[37m%lldms  Philo %d is eating\n", current_time, philo->id);
+	philo->last_meal_time = ft_time();
+	philo->meal_count += 1;
+	ft_usleep(philo->args->time_to_eat);
+	lay_forks(philo);
+}
+
 void	lay_forks(t_philo *philo)
 {
 	if (pthread_mutex_unlock(&(philo->fork_mutex)) != 0)
 		exit(1);
 	if (pthread_mutex_unlock(&(philo->next_philo->fork_mutex)) != 0)
 		exit(1);
-	philo->fork = 1;
-	philo->next_philo->fork = 1;
 	ph_sleep_and_think(philo);
 }
 
-int		take_forks(t_philo *philo)
+int	take_forks(t_philo *philo)
 {
-	philo->fork = 0;
-	philo->next_philo->fork = 0;
-
 	if (pthread_mutex_lock(&philo->fork_mutex) != 0)
 		return (0);
-
-	pthread_mutex_lock(&philo->args->write_mutex);
-	printf("\x1B[37m%lldms  Philo %d has taken a fork\n", ft_time() - philo->init_time, philo->id);
-	pthread_mutex_unlock(&(philo->args->write_mutex));
-
+	printf("\x1B[37m%lldms  Philo %d has taken a fork\n", ft_time() \
+		- philo->init_time, philo->id);
 	if (pthread_mutex_lock(&philo->next_philo->fork_mutex) != 0)
 		return (0);
-
-	pthread_mutex_lock(&(philo->args->write_mutex));
-	printf("\x1B[37m%lldms  Philo %d has taken a fork\n", ft_time() - philo->init_time, philo->id);
-	pthread_mutex_unlock(&(philo->args->write_mutex));
-
+	printf("\x1B[37m%lldms  Philo %d has taken a fork\n", ft_time() \
+		- philo->init_time, philo->id);
 	ph_eat(philo);
 	return (1);
 }
@@ -89,8 +64,9 @@ int	try_to_eat(t_philo *philo)
 		return (0);
 	if (philo->status == DEAD)
 		return (0);
-	if (philo->fork == 1 && philo->next_philo->fork == 1)
+	if (philo->can_eat == 1)
 	{
+		philo->can_eat = 0;
 		take_forks(philo);
 		return (1);
 	}
