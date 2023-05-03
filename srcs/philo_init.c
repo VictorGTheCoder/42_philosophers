@@ -6,7 +6,7 @@
 /*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/06 19:26:04 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/04/27 17:48:21 by vgiordan         ###   ########.fr       */
+/*   Updated: 2023/05/03 17:09:14 by vgiordan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,3 +38,5 @@ void	init_philosophers(t_data *data)
 			data->philo[i].next_philo = &(data->philo[i + 1]);
 	}
 }
+
+

@@ -6,11 +6,24 @@
 /*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/06 15:41:43 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/04/27 17:27:41 by vgiordan         ###   ########.fr       */
+/*   Updated: 2023/05/03 17:13:23 by vgiordan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "../includes/header.h"
+
+void	ft_putchar_fd(char c, int fd)
+{
+	write(fd, &c, 1);
+}
+
+void	ft_putstr_fd(char *s, int fd)
+{
+	while (*s)
+	{
+		ft_putchar_fd(*s++, fd);
+	}
+}
 
 static long long	ft_signe(const char *str)
 {

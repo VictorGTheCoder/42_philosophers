@@ -1,5 +1,5 @@
 SRCS	=	srcs/main.c srcs/philo_utils.c \
-			srcs/philo_init.c srcs/philo_actions.c srcs/philo.c
+			srcs/philo_init.c srcs/philo_actions.c srcs/philo.c srcs/ft_atoi.c
 
 OBJS	= ${SRCS:.c=.o}
 
@@ -13,24 +13,19 @@ NAME 	= philo
 
 INCLUDE = includes
 
-#$@ = all, $< = server / client
-
 %.o: %.c
 	$(CC) $(CFLAGS) -c $< -o ${<:.c=.o}
 
 $(NAME): $(OBJS)
-	make -C libft
-	$(CC) -o $(NAME) $(OBJS) -Llibft -lft -I $(INCLUDE) -g
+	$(CC) -o $(NAME) $(OBJS) -I $(INCLUDE) -fsanitize=thread -g
 
 all: $(NAME)
 
 clean:
 	$(RM) $(OBJS)
-	make clean -C libft
 
 fclean: clean
 	${RM}  $(NAME)
-	make fclean -C libft
 
 re: fclean all
 

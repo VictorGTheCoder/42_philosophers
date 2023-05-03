@@ -6,7 +6,7 @@
 /*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/06 19:26:18 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/04/27 18:32:52 by vgiordan         ###   ########.fr       */
+/*   Updated: 2023/05/03 17:08:06 by vgiordan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,8 +44,10 @@ int	philo_is_dead(t_philo *philo)
 	if (ft_time() - philo->last_meal_time > philo->args->time_to_die
 		&& philo->status != FINISHEAT)
 	{
+		//pthread_mutex_lock(&philo->args->change_status);
 		philo->status = DEAD;
 		philo->args->stop_p = 1;
+		//pthread_mutex_unlock(&philo->args->change_status);
 		printf("\x1B[31m%lldms  Philo %d died\n", ft_time()
 			- philo->init_time, philo->id);
 		return (1);
@@ -59,14 +61,16 @@ int	philo_is_dead(t_philo *philo)
 	return (1);
 }
 
-void	ft_usleep(long long time_in_ms)
+void	ft_usleep(long long time_in_ms, t_args *args)
 {
 	long long	current_time;
 
 	current_time = ft_time();
 	while ((ft_time() - current_time) <= time_in_ms)
 	{
-		usleep(50);
+		if (args->stop_p == 1)
+			break ;
+		usleep(200);
 		if ((ft_time() - current_time) >= time_in_ms)
 			break ;
 	}

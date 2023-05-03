@@ -6,7 +6,7 @@
 /*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/08 14:54:09 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/04/27 18:32:44 by vgiordan         ###   ########.fr       */
+/*   Updated: 2023/05/03 17:17:25 by vgiordan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,10 @@ void	*monitor_philos(void *p)
 	i = 0;
 	while (42)
 	{
+		//pthread_mutex_lock(&data->args->change_status);
 		if (data->args->stop_p == 1)
 			break ;
+		//pthread_mutex_unlock(&data->args->change_status);
 		j = 0;
 		if (all_philo_are_thinking(data->philo))
 		{
@@ -34,7 +36,7 @@ void	*monitor_philos(void *p)
 			}
 			i += 1;
 		}
-		ft_usleep(5);
+		ft_usleep(5, data->args);
 	}
 	return (NULL);
 }
@@ -59,7 +61,7 @@ void	*check_death(void *d)
 			}
 			i++;
 		}
-		ft_usleep(1);
+		ft_usleep(1, data->args);
 	}
 	return (NULL);
 }
@@ -75,7 +77,9 @@ void	*philo_routine(void *p)
 			return (NULL);
 		try_to_eat(philo);
 	}
+	//pthread_mutex_lock(&philo->args->change_status);
 	philo->status = FINISHEAT;
+	//pthread_mutex_unlock(&philo->args->change_status);
 	printf("\x1B[33m%lldms  Philo %d has eaten %d times on %d\n", ft_time() \
 	- philo->init_time, philo->id, philo->meal_count, philo->args->max_eat);
 	return (NULL);
@@ -89,6 +93,7 @@ void	process(t_data *data)
 
 	i = -1;
 	init_philosophers(data);
+	//pthread_mutex_init(&(data->args->change_status), NULL);
 	if (pthread_create(&monitor_thread, NULL, monitor_philos, data) != 0)
 		return ;
 	while (++i < data->args->nb_philos)

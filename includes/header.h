@@ -6,7 +6,7 @@
 /*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/06 14:30:06 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/04/27 17:49:03 by vgiordan         ###   ########.fr       */
+/*   Updated: 2023/05/03 17:13:35 by vgiordan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@
 # include <stdlib.h>
 # include <pthread.h>
 # include <sys/time.h>
-# include "../libft/libft.h"
 
 typedef enum s_status
 {
@@ -30,6 +29,7 @@ typedef enum s_status
 
 typedef struct s_args
 {
+	pthread_mutex_t	change_status;
 	int				nb_philos;
 	int				max_eat;
 	int				stop_p;
@@ -80,12 +80,15 @@ void		*philo_routine(void *data);
 int			philo_is_dead(t_philo *p);
 void		display_status(t_philo *p, char *str);
 long long	ft_time(void);
-void		ft_usleep(long long time_in_ms);
+void		ft_usleep(long long time_in_ms, t_args *args);
 int			all_philo_are_thinking(t_philo *p);
 int			get_hungriest_philo(t_data *p);
 
 /*<---------------------INIT--------------------->*/
 
 void		init_philosophers(t_data *data);
+
+long long	ft_atoi(const char *str);
+void		ft_putstr_fd(char *s, int fd);
 
 #endif
