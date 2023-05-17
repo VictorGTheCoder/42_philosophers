@@ -6,64 +6,31 @@
 /*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/08 14:54:09 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/05/03 17:17:25 by vgiordan         ###   ########.fr       */
+/*   Updated: 2023/05/17 18:19:11 by vgiordan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/header.h"
 
-void	*monitor_philos(void *p)
+static void	create_thread(t_data *data)
 {
-	t_data	*data;
-	int		i;
-	int		j;
+	int	i;
 
-	data = (t_data *) p;
 	i = 0;
-	while (42)
+	while (i < data->args->nb_philos)
 	{
-		//pthread_mutex_lock(&data->args->change_status);
-		if (data->args->stop_p == 1)
-			break ;
-		//pthread_mutex_unlock(&data->args->change_status);
-		j = 0;
-		if (all_philo_are_thinking(data->philo))
-		{
-			while (j < data->args->nb_philos - 1)
-			{
-				data->philo[(i + j) % (data->args->nb_philos)].can_eat = 1;
-				j += 2;
-			}
-			i += 1;
-		}
-		ft_usleep(5, data->args);
+		pthread_create(&(data->philo[i].thread), \
+		NULL, philo_routine, (&data->philo[i]));
+		i += 2;
 	}
-	return (NULL);
-}
-
-void	*check_death(void *d)
-{
-	int		i;
-	t_data	*data;
-
-	data = (t_data *)d;
-	while (42)
+	usleep(data->args->time_to_eat * 500);
+	i = 1;
+	while (i < data->args->nb_philos)
 	{
-		if (data->args->stop_p == 1)
-			break ;
-		i = 0;
-		while (i < data->args->nb_philos)
-		{
-			philo_is_dead(&data->philo[i]);
-			if (data->philo[i].status == DEAD)
-			{
-				break ;
-			}
-			i++;
-		}
-		ft_usleep(1, data->args);
+		pthread_create(&(data->philo[i].thread), \
+		NULL, philo_routine, (&data->philo[i]));
+		i += 2;
 	}
-	return (NULL);
 }
 
 void	*philo_routine(void *p)
@@ -73,38 +40,45 @@ void	*philo_routine(void *p)
 	philo = (t_philo *)p;
 	while (philo->args->max_eat > 0 && philo->meal_count < philo->args->max_eat)
 	{
+		pthread_mutex_lock(&philo->args->stop_mutex);
 		if (philo->args->stop_p == 1)
+		{
+			pthread_mutex_unlock(&philo->args->stop_mutex);
 			return (NULL);
+		}
+		pthread_mutex_unlock(&philo->args->stop_mutex);
 		try_to_eat(philo);
 	}
-	//pthread_mutex_lock(&philo->args->change_status);
 	philo->status = FINISHEAT;
-	//pthread_mutex_unlock(&philo->args->change_status);
 	printf("\x1B[33m%lldms  Philo %d has eaten %d times on %d\n", ft_time() \
 	- philo->init_time, philo->id, philo->meal_count, philo->args->max_eat);
 	return (NULL);
 }
 
+void	solo_philo(t_data *data)
+{
+	printf("\x1B[37m%lldms  Philo 1 has taken a fork\n", ft_time() \
+		- data->philo->init_time);
+	usleep(data->args->time_to_die * 1000);
+	printf("\x1B[31m%lldms  Philo 1 died\n", ft_time() \
+		- data->philo->init_time);
+}
+
 void	process(t_data *data)
 {
 	int			i;
-	pthread_t	monitor_thread;
-	pthread_t	check_death_thread;
 
-	i = -1;
+	i = 0;
+	pthread_mutex_init(&data->args->stop_mutex, NULL);
 	init_philosophers(data);
-	//pthread_mutex_init(&(data->args->change_status), NULL);
-	if (pthread_create(&monitor_thread, NULL, monitor_philos, data) != 0)
+	if (data->args->nb_philos == 1)
+	{
+		solo_philo(data);
 		return ;
-	while (++i < data->args->nb_philos)
-		pthread_create(&(data->philo[i].thread), \
-		NULL, philo_routine, (&data->philo[i]));
-	if (pthread_create(&check_death_thread, NULL, check_death, data) != 0)
-		return ;
+	}
+	create_thread(data);
 	i = 0;
 	while (i < data->args->nb_philos)
 		pthread_join(data->philo[i++].thread, NULL);
-	pthread_join(check_death_thread, NULL);
-	pthread_join(monitor_thread, NULL);
 	free(data->philo);
 }

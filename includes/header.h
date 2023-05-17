@@ -6,7 +6,7 @@
 /*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/06 14:30:06 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/05/03 17:13:35 by vgiordan         ###   ########.fr       */
+/*   Updated: 2023/05/17 18:27:51 by vgiordan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ typedef enum s_status
 
 typedef struct s_args
 {
-	pthread_mutex_t	change_status;
+	pthread_mutex_t	stop_mutex;
 	int				nb_philos;
 	int				max_eat;
 	int				stop_p;
@@ -41,7 +41,6 @@ typedef struct s_args
 typedef struct s_philo
 {
 	int				id;
-	int				can_eat;
 	int				meal_count;
 	long long		last_meal_time;
 	long long		init_time;
@@ -77,17 +76,13 @@ void		*philo_routine(void *data);
 
 /*<--------------------UTILS-------------------->*/
 
-int			philo_is_dead(t_philo *p);
-void		display_status(t_philo *p, char *str);
+int			check_death(t_philo *philo);
 long long	ft_time(void);
-void		ft_usleep(long long time_in_ms, t_args *args);
-int			all_philo_are_thinking(t_philo *p);
-int			get_hungriest_philo(t_data *p);
+void		ft_usleep(long long time_in_ms, t_philo *philo);
 
 /*<---------------------INIT--------------------->*/
 
 void		init_philosophers(t_data *data);
-
 long long	ft_atoi(const char *str);
 void		ft_putstr_fd(char *s, int fd);
 

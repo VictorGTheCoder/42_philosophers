@@ -6,7 +6,7 @@
 /*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/06 19:26:04 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/05/03 17:09:14 by vgiordan         ###   ########.fr       */
+/*   Updated: 2023/05/17 18:16:32 by vgiordan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,7 @@ void	init_philosophers(t_data *data)
 		data->philo[i].init_time = ft_time();
 		data->philo[i].last_meal_time = ft_time();
 		data->philo[i].meal_count = 0;
-		data->philo[i].can_eat = 0;
-		pthread_mutex_init((&data->philo[i].fork_mutex), NULL);
+		pthread_mutex_init(&data->philo[i].fork_mutex, NULL);
 	}
 	i = -1;
 	while (++i < data->args->nb_philos)
@@ -38,5 +37,3 @@ void	init_philosophers(t_data *data)
 			data->philo[i].next_philo = &(data->philo[i + 1]);
 	}
 }
-
-
