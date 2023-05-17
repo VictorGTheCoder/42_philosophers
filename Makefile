@@ -17,7 +17,7 @@ INCLUDE = includes
 	$(CC) $(CFLAGS) -c $< -o ${<:.c=.o}
 
 $(NAME): $(OBJS)
-	$(CC) -o $(NAME) $(OBJS) -I $(INCLUDE) -fsanitize=thread -g
+	$(CC) -o $(NAME) $(OBJS) -I $(INCLUDE)
 
 all: $(NAME)
 

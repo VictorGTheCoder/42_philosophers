@@ -6,7 +6,7 @@
 /*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/06 19:26:18 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/05/17 18:28:22 by vgiordan         ###   ########.fr       */
+/*   Updated: 2023/05/17 18:40:57 by vgiordan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,11 +32,7 @@ int	check_death(t_philo *philo)
 	{
 		philo->status = DEAD;
 		pthread_mutex_lock(&philo->args->stop_mutex);
-		if (philo->args->stop_p == 1)
-		{
-			pthread_mutex_unlock(&philo->args->stop_mutex);
-			return (0);
-		}
+		philo->args->stop_p = 1;
 		pthread_mutex_unlock(&philo->args->stop_mutex);
 		printf("\x1B[31m%lldms  Philo %d died\n", ft_time()
 			- philo->init_time, philo->id);
