@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo_actions.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: victo <victo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/06 19:25:48 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/05/17 18:40:17 by vgiordan         ###   ########.fr       */
+/*   Updated: 2023/05/18 21:51:09 by victo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,9 @@ void	ph_sleep_and_think(t_philo *philo)
 		pthread_mutex_unlock(&philo->args->stop_mutex);
 		return ;
 	}
-	pthread_mutex_unlock(&philo->args->stop_mutex);
 	printf("\x1B[37m%lldms  Philo %d is sleeping\n", ft_time() \
-			- philo->init_time, philo->id);
+		- philo->init_time, philo->id);
+	pthread_mutex_unlock(&philo->args->stop_mutex);
 	ft_usleep(philo->args->time_to_sleep, philo);
 	pthread_mutex_lock(&philo->args->stop_mutex);
 	if (philo->args->stop_p == 1)
@@ -31,9 +31,10 @@ void	ph_sleep_and_think(t_philo *philo)
 		pthread_mutex_unlock(&philo->args->stop_mutex);
 		return ;
 	}
-	pthread_mutex_unlock(&philo->args->stop_mutex);
 	printf("\x1B[37m%lldms  Philo %d is thinking\n", ft_time() \
-		- philo->init_time, philo->id);
+	- philo->init_time, philo->id);
+	pthread_mutex_unlock(&philo->args->stop_mutex);
+
 }
 
 void	ph_eat(t_philo *philo)

@@ -4,7 +4,6 @@ SRCS	=	srcs/main.c srcs/philo_utils.c \
 OBJS	= ${SRCS:.c=.o}
 
 CFLAGS	=  -Wall -Werror -Wextra
-
 CC		= gcc
 
 RM		= rm -f
