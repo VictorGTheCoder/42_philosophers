@@ -6,7 +6,7 @@
 /*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/06 19:25:48 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/05/23 09:52:49 by vgiordan         ###   ########.fr       */
+/*   Updated: 2023/05/23 10:25:32 by vgiordan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,6 @@ void	ph_sleep_and_think(t_philo *philo)
 	printf("\x1B[37m%lld %d is thinking\n", ft_time() \
 	- philo->init_time, philo->id);
 	pthread_mutex_unlock(&philo->args->stop_mutex);
-
 }
 
 void	ph_eat(t_philo *philo)
