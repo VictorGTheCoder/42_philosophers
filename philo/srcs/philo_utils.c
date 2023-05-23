@@ -6,7 +6,7 @@
 /*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/06 19:26:18 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/05/17 18:40:57 by vgiordan         ###   ########.fr       */
+/*   Updated: 2023/05/23 09:52:49 by vgiordan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,12 +30,18 @@ int	check_death(t_philo *philo)
 	if (ft_time() - philo->last_meal_time > philo->args->time_to_die
 		&& philo->status != FINISHEAT)
 	{
+
 		philo->status = DEAD;
 		pthread_mutex_lock(&philo->args->stop_mutex);
+		if (philo->args->stop_p == 1)
+		{
+			pthread_mutex_unlock(&philo->args->stop_mutex);
+			return (1);
+		}
+		printf("\x1B[31m%lld %d died\n", ft_time()
+			- philo->init_time, philo->id);
 		philo->args->stop_p = 1;
 		pthread_mutex_unlock(&philo->args->stop_mutex);
-		printf("\x1B[31m%lldms  Philo %d died\n", ft_time()
-			- philo->init_time, philo->id);
 		return (1);
 	}
 	while (i < philo->args->nb_philos)

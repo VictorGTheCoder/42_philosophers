@@ -17,7 +17,6 @@ INCLUDE = includes
 
 $(NAME): $(OBJS)
 	$(CC) -o $(NAME) $(OBJS) -I $(INCLUDE)
-
 all: $(NAME)
 
 clean:
