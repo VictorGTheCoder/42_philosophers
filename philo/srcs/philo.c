@@ -6,7 +6,7 @@
 /*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/08 14:54:09 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/05/23 09:52:49 by vgiordan         ###   ########.fr       */
+/*   Updated: 2023/05/30 12:17:08 by vgiordan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ static void	create_thread(t_data *data)
 		NULL, philo_routine, (&data->philo[i]));
 		i += 2;
 	}
-	usleep(data->args->time_to_eat * 500);
+	usleep(5000);
 	i = 1;
 	while (i < data->args->nb_philos)
 	{
@@ -51,17 +51,36 @@ void	*philo_routine(void *p)
 	}
 	philo->status = FINISHEAT;
 	printf("\x1B[33m%lld %d has eaten %d times on %d\n", ft_time() \
-	- philo->init_time, philo->id, philo->meal_count, philo->args->max_eat);
+	- philo->init_time, philo->id + 1, philo->meal_count, philo->args->max_eat);
 	return (NULL);
 }
 
 void	solo_philo(t_data *data)
 {
+	pthread_mutex_lock(&data->philo->fork_mutex);
 	printf("\x1B[37m%lld  1 has taken a fork\n", ft_time() \
 		- data->philo->init_time);
 	usleep(data->args->time_to_die * 1000);
 	printf("\x1B[31m%lld  1 died\n", ft_time() \
 		- data->philo->init_time);
+	pthread_mutex_unlock(&data->philo->fork_mutex);
+}
+
+static void	loop_death_checker(t_data *data)
+{
+	int	i;
+
+	i = 0;
+	while (42)
+	{
+		if (i == data->args->nb_philos)
+			i %= data->args->nb_philos;
+		if (check_death(&(data->philo[i])) == 1)
+		{
+			break ;
+		}
+		i++;
+	}
 }
 
 void	process(t_data *data)
@@ -74,11 +93,14 @@ void	process(t_data *data)
 	if (data->args->nb_philos == 1)
 	{
 		solo_philo(data);
-		return ;
 	}
-	create_thread(data);
-	i = 0;
-	while (i < data->args->nb_philos)
-		pthread_join(data->philo[i++].thread, NULL);
+	else
+	{
+		create_thread(data);
+		loop_death_checker(data);
+		i = 0;
+		while (i < data->args->nb_philos)
+			pthread_join(data->philo[i++].thread, NULL);
+	}
 	free(data->philo);
 }

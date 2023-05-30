@@ -6,7 +6,7 @@
 /*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/06 19:26:18 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/05/23 10:25:52 by vgiordan         ###   ########.fr       */
+/*   Updated: 2023/05/26 13:43:03 by vgiordan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,9 +65,7 @@ void	ft_usleep(long long time_in_ms, t_philo *philo)
 			return ;
 		}
 		pthread_mutex_unlock(&philo->args->stop_mutex);
-		if (check_death(philo) == 1)
-			return ;
-		usleep(500);
+		usleep(200);
 		if ((ft_time() - current_time) >= time_in_ms)
 			break ;
 	}
